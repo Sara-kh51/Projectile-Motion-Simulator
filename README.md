@@ -11,6 +11,7 @@ An interactive projectile motion visualizer built with **Python** and **Matplotl
 - 🎛️ **Live controls** — adjust velocity and launch angle on the fly
 - 🔁 **Restart button** to replay the animation with updated parameters
 - 📐 **Auto-scaling axes** that adapt to any velocity/angle combination
+- 📏 **Calculates parameters** such as Range, Height and Total time.
 ---
  
 ## 📸 Preview
