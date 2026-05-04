@@ -1,0 +1,75 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.widgets import TextBox, Button
+
+u = 20
+theta = 45
+g = 9.8
+frame = 0
+timer = None
+
+fig, ax = plt.subplots()
+plt.subplots_adjust(bottom=0.25)
+
+line, = ax.plot([],[], 'b-', linewidth=2)
+ball, = ax.plot([],[], 'ro', markersize=10)
+
+ax_u = fig.add_axes([0.20, 0.08, 0.2,  0.05])
+ax_theta = fig.add_axes([0.65, 0.08, 0.2,  0.05])
+ax_btn = fig.add_axes([0.43, 0.08, 0.12, 0.05])
+
+text_u = TextBox(ax_u,'Velocity:', initial='20')
+text_theta = TextBox(ax_theta, 'Angle:', initial='45')
+btn = Button(ax_btn, 'Restart', color='lightcoral', hovercolor='red')
+
+def update_axes():
+    ax.set_xlim(0, (u**2 * np.sin(2 * np.radians(theta)) / g) * 1.1)
+    ax.set_ylim(0, ((u * np.sin(np.radians(theta)))**2 / (2 * g)) * 1.1)
+
+def tick():
+    global frame
+    t_max = 2 * u * np.sin(np.radians(theta)) / g
+    t = np.linspace(0, t_max, 100)
+
+    if frame >= len(t):
+        timer.stop()
+        return
+
+    x = u * np.cos(np.radians(theta)) * t[:frame]
+    y = u * np.sin(np.radians(theta)) * t[:frame] - 0.5 * g * t[:frame] ** 2
+
+    line.set_data(x, y)
+    ball.set_data([x[-1]] if frame > 0 else [0], [y[-1]] if frame > 0 else [0])
+    fig.canvas.draw_idle()
+    frame += 1
+
+def start_animation(e=None):
+    global frame, timer
+    frame = 0
+    line.set_data([], [])
+    ball.set_data([0], [0])
+    update_axes()
+    fig.canvas.draw_idle()
+
+    if timer is not None:
+        timer.stop()
+
+    timer = fig.canvas.new_timer(interval=20)
+    timer.add_callback(tick)
+    timer.start()
+
+def on_submit(val):
+    global u, theta
+    try:
+        u = float(text_u.text)
+        theta = float(text_theta.text)
+    except ValueError:
+        return
+    start_animation()
+
+text_u.on_submit(on_submit)
+text_theta.on_submit(on_submit)
+btn.on_clicked(start_animation())
+
+start_animation()
+plt.show()
