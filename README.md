@@ -15,10 +15,9 @@ An interactive projectile motion visualizer built with **Python** and **Matplotl
  
 ## 📸 Preview
  
-```
+
 <img width="640" height="480" alt="Figure_1" src="https://github.com/user-attachments/assets/b91e32d5-3375-4bd2-87e1-b1ff9cd5ce54" />
 
- 
 ---
  
 ## 🛠️ Installation
