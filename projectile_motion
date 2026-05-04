@@ -7,9 +7,14 @@ theta = 45
 g = 9.8
 frame = 0
 timer = None
+t_max = 2 * u * np.sin(np.radians(theta)) / g
+h = u ** 2 * np.sin(np.radians(theta)) * 2 / g * 2
+r = u ** 2 * np.sin(2 * np.radians(theta)) / g 
 
 fig, ax = plt.subplots()
 plt.subplots_adjust(bottom=0.25)
+plt.figtext(0.5, 0.95,f"Range:{round(r,2)} Time:{round(t_max,2)} Height:{round(h,2)}", ha="center", fontsize=14, 
+            bbox={"facecolor":"orange", "alpha":0.5, "pad":5})
 
 line, = ax.plot([],[], 'b-', linewidth=2)
 ball, = ax.plot([],[], 'ro', markersize=10)
@@ -43,7 +48,7 @@ def tick():
     fig.canvas.draw_idle()
     frame += 1
 
-def start_animation(e=None):
+def start_animation():
     global frame, timer
     frame = 0
     line.set_data([], [])
@@ -69,7 +74,7 @@ def on_submit(val):
 
 text_u.on_submit(on_submit)
 text_theta.on_submit(on_submit)
-btn.on_clicked(start_animation())
+btn.on_clicked(lambda e: start_animation())
 
 start_animation()
 plt.show()
